@@ -27,14 +27,13 @@ function App(){
           <h2 style={{ alignSelf: "center", justifySelf: "flex-start" }}>Incident Number {activeCall.incidentNumber}</h2>
           <p style={detailStyle}><strong>Beat No.:</strong> {activeCall.beat}</p>
           <p style={detailStyle}><strong>Block:</strong> {activeCall.block}</p>
-          <p style={detailStyle}><strong>Date:</strong> {activeCall.date}</p>
+          <p style={detailStyle}><strong>Date:</strong> {new Date(activeCall.date.split('T')[0] + "T" + activeCall.time).toLocaleString()}</p>
           <p style={detailStyle}><strong>Division:</strong> {activeCall.division}</p>
           <p style={detailStyle}><strong>Location:</strong> {activeCall.location}</p>
-          <p style={detailStyle}><strong>Nature of Call:</strong> {activeCall.natureOfCall}</p>
+          <p style={detailStyle}><strong>Nature of Call:</strong> {activeCall.clarifyNatureOfCall()}</p>
           <p style={detailStyle}><strong>Priority No. (1-4):</strong> {activeCall.priority}</p>
           <p style={detailStyle}><strong>Reporting Area:</strong> {activeCall.reportingArea}</p>
           <p style={detailStyle}><strong>Status:</strong> {activeCall.status}</p>
-          <p style={detailStyle}><strong>Time:</strong> {activeCall.time}</p>
           <p style={detailStyle}><strong>Responding Unit No.:</strong> {activeCall.unitNumber}</p>
         </div>
       </div>

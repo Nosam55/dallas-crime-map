@@ -6,7 +6,7 @@ export default function Marker({lat, lng, children, onClick}){
 
   function showDetails(){
     const detailWindow = (
-      <div style={{ width: "120px", height: "90px", backgroundColor: "#999999", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+      <div style={{ zIndex: "100", padding: "3px", width: "120px", height: "90px", backgroundColor: "#999999", border: "1px solid black", position: "absolute", transform: "translate(-50%, calc(-100% - 35px))", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
         {children}
       </div>
     );
