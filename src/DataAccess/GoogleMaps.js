@@ -54,12 +54,14 @@ async function searchLocationByAddress(address){
   service.findPlaceFromQuery(query, (result, status) => {
     console.log("findPlaceFromQuery callback ", status);
 
-    placeLocation = result[0]?.geometry?.location;
+    if(result?.length > 0){
+      placeLocation = result[0]?.geometry?.location;
+    }
 
-    if(result.length > 1){
+    if(result?.length > 1){
       console.warn(`FindPlaceFromQuery search returned ${result.length} results for '${address}'`);
     }
-    else if(result.length == 0){
+    else if(result?.length === 0 || !result?.length){
       console.error(`FindPlaceFromQuery search returned no results for ${address}`);
       placeLocation = undefined;
     }
@@ -73,7 +75,7 @@ async function searchLocationByAddress(address){
 
     const intervalId = setInterval(function(){
       if(count >= retries){
-        reject("error: timeout");
+        reject("error: timeout on ", address);
       }
       else{
         if(placeLocation !== null){

@@ -8,11 +8,20 @@ async function getActiveCalls(){
 
   for(let i = 0; i < activeCalls.length; ++i){
     activeCalls[i] = new ActiveCall(activeCalls[i]);
+
+    // "N Central Serv Nb / Monticello Ave"
+    // Remove all " [NSEW]b " and all " Serv "
+    activeCalls[i].location = activeCalls[i].location.replace(" Serv ", " ").replace(/ [NSEW][Bb] /, " ");
+
   }
   
-  // "N Central Serv Nb / Monticello Ave"
-  // Remove all " [NSEW]b " and all " Serv " 
-  return activeCalls;
+  // Remove Duplicates
+  let activeCallsMap = new Map();
+  activeCalls.forEach(element => {
+    activeCallsMap.set(element.incidentNumber, element);
+  });
+
+  return Array.from(activeCallsMap.values());
 }
 
 async function getIncidentByNumber(incidentNumber){

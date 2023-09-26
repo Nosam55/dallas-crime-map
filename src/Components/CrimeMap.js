@@ -2,7 +2,7 @@ import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import apiKeys from '../Secrets/APIKeys.json'
 
-function CrimeMap({ height, width, children }) {
+function CrimeMap({ height, width, children}) {
     const defaultProps = {
         center: {
             lat: 32.98570035325772,
@@ -15,7 +15,7 @@ function CrimeMap({ height, width, children }) {
     width ??= '33%';
 
     return (
-        <div style={{ height, width, border: "black solid 2px" }}>
+        <div style={{ margin: "25px", height, width, border: "black solid 2px" }}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: apiKeys.GoogleMaps }}
                 defaultCenter={defaultProps.center}
