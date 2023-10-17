@@ -5,15 +5,9 @@ import { getActiveCalls } from './DataAccess/DallasOpenData';
 import { searchLocationByAddress } from './DataAccess/GoogleMaps';
 import './App.css';
 
-
-function searchForHome() {
-  searchLocationByAddress("333 Melrose Drive")
-    .then(result => console.log(result))
-    .catch(err => console.error(err));
-}
-
 function App(){
   const [markers, setMarkers] = useState([]);
+  const [activeCalls, setActiveCalls] = useState([]);
   const [activeCallDetails, setActiveCallDetails] = useState(undefined);
 
   function showDetails(activeCall){
@@ -58,6 +52,8 @@ function App(){
           promises.push(promise);
         }
 
+        setActiveCalls(calls);
+
         Promise.allSettled(promises)
           .then(coordsArray => {
             console.log('Promise Array ', coordsArray);
@@ -89,18 +85,18 @@ function App(){
           });
   }, []);
 
-  const filterOptions = [
-    {
-
-    }
-  ]
+  console.log('render')
 
   return (
     <div className="App">
       <div className="App-header">
         <h2>Welcome to the Dallas Active Police Calls Map</h2>
+        <div className='App-navbar'>
+          <a href="#">Some text</a>
+          <a href="about:blank">A link</a>
+        </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
         {activeCallDetails}
         <CrimeMap width="50vw" height="37vw">
           {markers}
