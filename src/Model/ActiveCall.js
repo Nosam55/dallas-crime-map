@@ -1,3 +1,5 @@
+// 172706-2023
+// Incident Num of Murder shown on DPD Beat
 class ActiveCall {
   constructor({beat, block, date, division, incident_number, location, nature_of_call, priority, reporting_area, status, time, unit_number}){
     this.beat = beat;
@@ -13,18 +15,24 @@ class ActiveCall {
     this.time = time;
     this.unitNumber = unit_number;
   }
+
   clarifyNatureOfCall(){
+    // Nature of Call is in form "<code> - <short_description>"
     const code = this.natureOfCall.split('-')[0].trim();
 
+    /*
+     * The values in this table are largely sourced from this quizlet set by user doleary13k:
+     * https://quizlet.com/425402678/dallas-pd-radio-signals-codes-channels-flash-cards/?funnelUUID=856325df-59f2-498e-9615-696a9738b13b
+     */
     switch(code){
       case "BCA":
         return "BCA - Bait Car Activation";
       case "CT":
         return "CT - Criminal Trespass";
       case "DAEV":
-        return "DAEV - Disturbance";
+        return "DAEV - Disturbance, Armed Encounter, Suspect in Vehicle";
       case "DAEF":
-        return "DAEF - Disturbance";
+        return "DAEF - Disturbance, Armed Encounter, Suspect on Foot";
       case "DASV":
         return "DASV - Disturbance Active Shooter in Vehicle, HIGHEST PRIORITY";
       case "DASF":
@@ -183,6 +191,8 @@ class ActiveCall {
         return "40/01 - Other Caution is Advised";
       case "09V":
         return "09V - Unauthorized Use of Motor Vehicle in Progress";
+      case "09V-01":
+        return "09V - Unauthorized Use of Motor Vehicle, Just Occurred";
       case "41/11V":
         return "41/11V - Burglary of a Motor Vehicle in Progress";
       case "41/11B":
