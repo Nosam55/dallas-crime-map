@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CrimeMap from './Components/CrimeMap';
 import Marker from './Components/Marker';
+import FilterDropdown from './Components/FilterDropdown';
 import { getActiveCalls } from './DataAccess/DallasOpenData';
 import { searchLocationByAddress } from './DataAccess/GoogleMaps';
 import './App.css';
@@ -9,6 +10,7 @@ function App(){
   const [markers, setMarkers] = useState([]);
   const [activeCalls, setActiveCalls] = useState([]);
   const [activeCallDetails, setActiveCallDetails] = useState(undefined);
+  const markerArrayRef = useRef(null);
 
   function showDetails(activeCall){
     const detailStyle = {
@@ -42,6 +44,17 @@ function App(){
     }
   }
 
+  function filterMarkers({property, value}) {
+    console.log("updating filtered markers", property, value);
+    const nextMarkerArray = markers.map(marker => {
+      return (<Marker {...{
+        ...marker.props,
+        hidden: value && (marker.props.call[property] != value)
+      }} />);
+    });
+    setMarkers(nextMarkerArray);
+  }
+
   useEffect(() => {
     getActiveCalls()
       .then(calls => {
@@ -64,7 +77,7 @@ function App(){
               if(coords && typeof coords.lat === "function"){
                 const call = coords.activeCall;
                 const newMarker = (
-                  <Marker key={call.incidentNumber} onClick={() => showDetails(call)} lat={coords.lat()} lng={coords.lng()}>
+                  <Marker key={call.incidentNumber} onClick={() => showDetails(call)} lat={coords.lat()} call={call} lng={coords.lng()}>
                     {`Beat: ${call.beat}`}
                     <br/>
                     {`Nature of Call: ${call.natureOfCall}`}
@@ -80,7 +93,9 @@ function App(){
             }).filter(x => !!x);
 
               console.log('setting markers', markerArray)
-              setMarkers([...new Set(markerArray)]);
+              const uniqueMarkerArray = [...new Set(markerArray)];
+              setMarkers(uniqueMarkerArray);
+              markerArrayRef.current = uniqueMarkerArray;
             });
           });
   }, []);
@@ -90,7 +105,7 @@ function App(){
   return (
     <div className="App">
       <div className="App-header">
-        <h2>Welcome to the Dallas Active Police Calls Map</h2>
+        <h2>Welcome to the DOD (Dallas OpenData) Police Scanner</h2>
         <div className='App-navbar'>
           <a href="#">Some text</a>
           <a href="about:blank">A link</a>
@@ -101,6 +116,7 @@ function App(){
         <CrimeMap width="50vw" height="37vw">
           {markers}
         </CrimeMap>
+        <FilterDropdown onFilterChange={(filterObj) => {filterMarkers(filterObj);}} items={activeCalls} />
       </div>
     </div>
   );

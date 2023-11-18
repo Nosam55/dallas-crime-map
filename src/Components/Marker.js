@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import markerImage from "../Images/map-marker.png"
 
-export default function Marker({lat, lng, children, onClick}){
+export default function Marker({lat, lng, children, onClick, ...props}){
   const [details, setDetails] = useState(<div/>);
 
   function showDetails(){
@@ -19,7 +19,7 @@ export default function Marker({lat, lng, children, onClick}){
   }
 
   return (
-    <div onClick={onClick} lat={lat} lng={lng} onMouseEnter={showDetails} onMouseLeave={hideDetails}>
+    <div {...props} onClick={onClick} lat={lat} lng={lng} onMouseEnter={showDetails} onMouseLeave={hideDetails}>
       <img style={{ height: "30px", width: "auto", position: "absolute", transform: "translate(-50%, -100%)"}} src={markerImage}>
       </img>
       {details}
